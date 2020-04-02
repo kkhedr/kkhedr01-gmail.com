@@ -1,0 +1,79 @@
+﻿@model e_market.Models.Product
+
+@{
+    ViewBag.Title = "show";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Product Details</h2>
+<hr />
+<div>
+
+    <div class="card text-center">
+        <div class="card-header" style="font-size:25px">
+            @Model.name -- @Model.price ---> (@Model.Category.name)
+        </div>
+        <div class="card-body">
+            <img src="~/Content/uploads/@Model.image" style="width:600px;height:300px" class="card-img-top" alt="...">
+
+        </div>
+        <div class="card-footer text-muted" style="font-size:25px">
+            <p>@Model.description</p>
+        </div>
+    </div>
+
+    <div>
+        <button class="btn btn-default" style="background-color:forestgreen;float:left"> @Html.ActionLink("Update", "Update", new { id = Model.id })</button>
+        @using (Html.BeginForm("Delete", "Product", FormMethod.Post))
+        {
+            @Html.HiddenFor(model => model.id)
+            <div class="form-group" style="float:right">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Delete" onclick="return DeleteConfirm()" class="btn btn-danger delete" />
+                </div>
+            </div>
+        }
+    </div>
+    <br /><br />
+</div>
+<p>
+ 
+</p>
+<script>
+
+    function DeleteConfirm() {
+        if (confirm("Are you sure want to delete record"))
+            return true;
+        else
+            return false;
+    }
+    $(document).ready(function () {
+        //delete
+        $('.delete').click(function (e) {
+
+            var that = $(this)
+
+            e.preventDefault();
+
+            var n = new Noty({
+                text: "Confirm Delete",
+                type: "warning",
+                killer: true,
+                buttons: [
+                    Noty.button("yes", 'btn btn-success mr-2', function () {
+                        that.closest('form').submit();
+                    }),
+
+                    Noty.button("no", 'btn btn-primary mr-2', function () {
+                        n.close();
+                    })
+                ]
+            });
+
+            n.show();
+
+        });//end of delete
+
+    });
+</script>
+

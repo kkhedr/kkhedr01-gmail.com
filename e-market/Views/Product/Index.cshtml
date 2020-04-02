@@ -1,0 +1,51 @@
+﻿@model e_market.Models.Product
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+
+<button class="btn btn-block">@Html.ActionLink("Create New", "Create")</button>
+
+<div style="margin-left:250px;">
+    @using (Html.BeginForm("IndexFilter", "Product", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="row">
+        @Html.LabelFor(model => model.Category_id, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Category_id, new SelectList(ViewBag.categories, "id", "name"), "select Category", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Category_id, "", new { @class = "text-danger" })
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+        
+    </div>
+
+    }
+
+</div>
+<br /><br />
+<div class="row">
+    
+    @foreach (var product in ViewBag.products)
+    {
+        <div class="col-md-3">
+            <div class="card" style="width: 18rem;">
+                <img src="~/Content/uploads/@product.image" style="width:250px;height:300px" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@product.name --><span>@product.price</span></h5>
+                    <p class="card-text"> @product.description</p>
+
+                    <button class="btn btn-primary">@Html.ActionLink("details", "show", new { id = product.id })</button>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</div>
+
